@@ -1,23 +1,53 @@
 "use client";
 
-import React from 'react';
-import dynamic from 'next/dynamic'
+import React, {useMemo} from 'react';
+import dynamic from 'next/dynamic';
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 import "easymde/dist/easymde.min.css";
 
+import { useForm, Controller } from "react-hook-form"
+
+interface IssueForm {
+  title: string;
+  description: string;
+}
+
 const NewIssuePage = () => {
+
+  const { register, control, handleSubmit } = useForm<IssueForm>();
+
+  const mdeOptions = useMemo(() => {
+    return {
+      autofocus: true,
+      spellChecker: false
+    }
+  }, []);
+
   return (
-    <div className="max-w-xl space-y-5">
-      <div className="flex flex-col gap-y-5">
-        <input type="text" placeholder="Title" className="input input-bordered w-full" />
-        <SimpleMDE
-          className="textarea textarea-bordered"
-          placeholder="Description"
-          options={{spellChecker: false}}
-        >
-        </SimpleMDE>
-        <button className="btn btn-primary max-w-fit">Submit New Issue</button>
-      </div>
+    <div className='flex items-center justify-center'>
+      <form className="max-w-xl space-y-5" onSubmit={handleSubmit((data) => console.log(data))}>
+
+        <h1 className="text-3xl text-center text-zinc-600 font-bold">New Issue</h1>
+
+        <input type="text" {...register("title")} placeholder="Title" className="input input-bordered w-full" />
+
+        <Controller
+          control={control}
+          name="description"
+          render={({ field: { ref, value, onBlur, onChange } }) => (
+            <SimpleMDE
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              className="textarea textarea-bordered"
+              placeholder="Description"
+              options={mdeOptions}
+            />
+          )}
+        />
+
+        <button type='submit' className="btn btn-neutral w-full">Submit</button>
+      </form>
     </div>
   )
 }
