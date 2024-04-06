@@ -4,6 +4,8 @@ import React, {useMemo} from 'react';
 import dynamic from 'next/dynamic';
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false })
 import "easymde/dist/easymde.min.css";
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 import { useForm, Controller } from "react-hook-form"
 
@@ -23,9 +25,16 @@ const NewIssuePage = () => {
     }
   }, []);
 
+
+  const router = useRouter()
+
   return (
     <div className='flex items-center justify-center'>
-      <form className="max-w-xl space-y-5" onSubmit={handleSubmit((data) => console.log(data))}>
+      <form className="max-w-xl space-y-5" onSubmit={handleSubmit( async (data) => 
+      {
+        await axios.post('/api/issues', data);
+        router.push('/issues');
+      })}>
 
         <h1 className="text-3xl text-center text-zinc-600 font-bold">New Issue</h1>
 
