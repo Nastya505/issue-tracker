@@ -4,12 +4,8 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: '*.panda.org'
-            },
-            {
-                protocol: 'https',
-                hostname: 'svgsilh.com'
-            },
+                hostname: '*.unsplash.com'
+            }
         ],
       }
 };
