@@ -9,3 +9,11 @@ export const createIssueSchema = z.object({
 });
 
 export type IssueForm = z.infer<typeof createIssueSchema>;
+
+
+export interface IIssue{
+  id: number;
+  title: string;
+  description: string;
+  
+}
